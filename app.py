@@ -12,7 +12,6 @@ st.sidebar.markdown("### ⚙️ Workspace Panel")
 st.sidebar.markdown("👨‍💻 **Developed by: RyanK**")
 st.sidebar.markdown("---")
 
-# STEP-BY-STEP CONTROL: This solves the 3000-token cutoff error entirely
 st.sidebar.markdown("### 🎯 Modular Target Selector")
 selected_section = st.sidebar.selectbox(
     "Choose Target Section to Draft:",
@@ -23,13 +22,11 @@ selected_section = st.sidebar.selectbox(
         "4. Literature Review: Part 2 - Code Provenance & Licensing Risks (Rubric Item 3 - 5 Marks)",
         "5. Legal, Social, Ethical, and Professional Accountability (Rubric Item 4 - 3 Marks)",
         "6. Final Consolidated Harvard References Bibliography (Rubric Item 5 - 2 Marks)"
-    ],
-    help="Drafting section-by-section guarantees maximum word count density and eliminates text truncation."
+    ]
 )
 st.sidebar.markdown("---")
 
-# Clear conversation button
-if st.sidebar.button("🧹 Clear Active Workspace", use_container_width=True):
+if st.sidebar.button("工作区清除 / Clear Active Workspace", use_container_width=True):
     st.session_state.messages = []
     st.rerun()
 
@@ -45,20 +42,16 @@ if not GROQ_API_KEY:
 
 client = Groq(api_key=GROQ_API_KEY)
 
-# 3. System Prompt Boundaries (Re-engineered for Section-Specific Human Execution)
+# 3. System Prompt Boundaries (Overhauled to destroy AI Syntax Monotony)
 SYSTEM_INSTRUCTION = f"""
-You are a senior computer science professor and senior software reviewer. Your goal is to draft a massive, deeply detailed academic text focused exclusively on the user's selected section blueprint.
+You are an opinionated, highly critical Senior Computer Science Professor and software systems architect. You are writing an advanced peer-reviewed paper. Your text must feel gritty, deeply analytical, and heavily specialized.
 
-TARGET EXECUTION FOCUS:
-You are currently writing ONLY the following segment: "{selected_section}".
-You must expand this section with profound technical specificity, detailing explicit architectural flows, code validation frameworks, static analysis mechanisms, or professional ethics codes relevant to mobile engineering.
-
-CRITICAL LINGUISTIC & ANTI-AI CONSTRAINTS:
-1. HARVARD CITATION MANDATE: Every reference must use explicit Harvard text tags like (Kim et al., 2020) or (Singh and Kumar, 2019). NEVER use bracketed numbers like [1] or.
-2. ZERO LOOPING & HIGH LEXICAL DENSITY: Do not repeat concepts, definitions, or introductory phrases. Never start sentences with repetitive crutches like "The data exposes" or "It is important to note."
-3. STRUCTURAL ASYMMETRIC BURSTINESS: Alter sentence patterns continuously. Write a brief 5-word statement. Follow it immediately with a complex, 35-word analytical observation using semicolons or em-dashes. 
-4. HARD-BANNED FILLER WORDS: Completely omit: furthermore, moreover, additionally, in conclusion, strictly speaking, overall, delve, testament, revolutionize, crucial, paramount, seamless, fostering, tapestry, landscape, digital era, dawn of.
-5. End paragraphs cleanly on the final logical deduction without summary loops.
+STYLISTIC COMMANDS (DESTROY THE AI CADENCE):
+1. NO HIGH-LEVEL SUMMARIES: Do not define things or create lists of features. Dive straight into technical mechanics, engineering friction, architectural liabilities, and specific vulnerabilities.
+2. SYNTACTIC JAGGEDNESS: Break sentence rhythm systematically. Never use the same sentence structure twice in a row. Write a blunt, direct statement (e.g., "The integration breaks down here."). Follow it with an incredibly complex, 30+ word analytical sentence containing em-dashes or semicolons. Follow that with a medium transitional sentence.
+3. CONCRETE TECHNOLOGY OVER ABSTRACT WORDS: Instead of writing vague phrases like "code validation frameworks," use highly specific domain phrases (e.g., "automated linting boundaries," "containerized sandbox regression tests," "AST parsing loops," or "Git-tag validation rules").
+4. ZERO TOLERANCE FOR CRUTCH PHRASES: Strictly ban all introductory or transitional AI filler. Completely erase phrases like: "The data exposes," "It is important to note," "A multifaceted approach," "Plays a vital role," "By adopting a rigorous approach," or "As mobile applications become increasingly sophisticated."
+5. HARVARD CITATION STYLE: Inline citations must blend seamlessly as a natural human clause, following the strict format of (Author, Year) or Author (Year). Never use brackets like [1] or.
 """
 
 # 4. Display Workspace History
@@ -77,9 +70,9 @@ if st.button("🚀 Execute High-Density Section Generation", type="primary", use
     execution_prompt = f"""
     Draft the target assignment portion: "{selected_section}".
     
-    Topic Requirements: Focus explicitly on explaining how generative AI tools can be effectively leveraged in mobile development pipelines while ensuring ethical responsibility, minimizing risks, and maintaining integrity throughout.
+    Assignment Context: The paper evaluates how generative AI tools can be effectively leveraged in mobile development pipelines while ensuring ethical responsibility, minimizing risks, and maintaining integrity throughout.
     
-    Ensure all in-text markers strictly follow the (Author, Year) Harvard format. Do not summarize or use banned AI filler words.
+    Execution Instruction: Focus heavily on the engineering conflicts, code dependencies, and legal/licensing liabilities. Write with structural jaggedness and dense, technical vocabulary. Keep the text grounded in pure human academic writing logic.
     """
     
     with st.chat_message("user"):
@@ -97,10 +90,10 @@ if st.button("🚀 Execute High-Density Section Generation", type="primary", use
                         {"role": "system", "content": SYSTEM_INSTRUCTION},
                         {"role": "user", "content": execution_prompt}
                     ],
-                    temperature=0.58,        
-                    top_p=0.82,              
-                    frequency_penalty=0.75,  # Aggressively raised to 0.75 to completely destroy repetitive text loops
-                    presence_penalty=0.55,   # Raised to 0.55 to force completely new vocabulary terms
+                    temperature=0.62,        # Bumped slightly to 0.62 to increase natural vocabulary variety
+                    top_p=0.80,              
+                    frequency_penalty=0.85,  # Significantly raised to 0.85 to brutally suppress repetitive AI transitions
+                    presence_penalty=0.60,   # Raised to 0.60 to force the model into specialized computer science terminology
                     max_tokens=2500          
                 )
                 response = completion.choices[0].message.content
@@ -109,9 +102,9 @@ if st.button("🚀 Execute High-Density Section Generation", type="primary", use
                 
                 # Dynamic Download Utility block
                 st.download_button(
-                    label=f"📥 Download {selected_section.split(' ')[1]} Draft Segment",
+                    label=f"📥 Download Draft Segment",
                     data=response,
-                    file_name=f"Segment_{selected_section.split(' ')[1]}.txt",
+                    file_name="Section_Draft.txt",
                     mime="text/plain",
                     use_container_width=True
                 )
